@@ -38,7 +38,7 @@
   font-size: 12px;
   margin: 9px 0 0 0;
 }
-button {
+.product button {
   text-align: center;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -55,6 +55,6 @@ button {
   border-radius: 0px 0px 8px 8px;
   margin: -1px;
 }
-button:hover{
+.product button:hover{
     background-color: #ff9900;
 }
