@@ -1,8 +1,6 @@
 .shop-container {
-    padding-top: 200px;
   display: grid;
   grid-template-columns: 4fr 1fr;
-  /* position: relative; */
 }
 
 .products-container {
@@ -10,10 +8,16 @@
   grid-template-columns: repeat(3, 300px);
   gap: 45px;
   margin: 0 auto;
+  padding-top: 200px;
 }
 
 @media only screen and (max-width: 1310px) {
   .products-container {
     grid-template-columns: repeat(2, 300px);
+  }
+}
+@media only screen and (max-width: 980px){
+  .products-container {
+    grid-template-columns: 300px;
   }
 }
