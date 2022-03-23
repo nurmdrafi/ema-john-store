@@ -12,15 +12,6 @@
   margin: 0 auto;
 }
 
-.cart-container {
-  position: fixed;
-  top: 80px;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  width: 264px;
-  background: rgba(255, 153, 0, 0.3);
-}
 @media only screen and (max-width: 1310px) {
   .products-container {
     grid-template-columns: repeat(2, 300px);
