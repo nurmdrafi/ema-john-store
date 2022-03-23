@@ -2,24 +2,52 @@ import React, { useEffect, useState } from "react";
 import Product from "../Product/Product";
 import "./Shop.css";
 import Cart from "../Cart/Cart";
-import { addToLocalStorage } from "../../utilities/localStorageManagement";
+import {
+  addToLocalStorage,
+  getStoredCart,
+  deleteShoppingCart
+} from "../../utilities/localStorageManagement";
 
 const Shop = () => {
-  // Load Products
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  // Load Products
   useEffect(() => {
     fetch("./products.json")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
 
-  // Add To Cart
-  const [cart, setCart] = useState([]);
-  const addToCart = (product) => {
-    // [peviousCart + newCart]
-    const newCart = [...cart, product];
+  // Load Cart from Local Storage
+  useEffect(() => {
+    const storedCart = getStoredCart();
+    const savedCart = [];
+    for (const id in storedCart) {
+      const addedProduct = products.find((product) => product.id === id);
+      if (addedProduct) {
+        const quantity = storedCart[id];
+        addedProduct.quantity = quantity;
+        savedCart.push(addedProduct);
+      }
+    }
+    setCart(savedCart);
+  }, [products]);
+
+  const addToCart = (selectedProduct) => {
+    let newCart = [];
+    const exist = cart.find(product => product.id === selectedProduct.id);
+    if(!exist){
+      selectedProduct.quantity = 1;
+      newCart = [...cart, selectedProduct];
+    } else{
+      const rest = cart.filter(product => product.id !== selectedProduct.id);
+      exist.quantity = exist.quantity + 1;
+      newCart = [...rest, exist];
+    }
+
     setCart(newCart);
-    addToLocalStorage(product.id)
+    addToLocalStorage(selectedProduct.id);
   };
 
   return (
