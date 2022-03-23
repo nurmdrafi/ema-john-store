@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Product from "../Product/Product";
 import "./Shop.css";
 import Cart from "../Cart/Cart";
+import { addToLocalStorage } from "../../utilities/localStorageManagement";
 
 const Shop = () => {
   // Load Products
@@ -18,6 +19,7 @@ const Shop = () => {
     // [peviousCart + newCart]
     const newCart = [...cart, product];
     setCart(newCart);
+    addToLocalStorage(product.id)
   };
 
   return (
