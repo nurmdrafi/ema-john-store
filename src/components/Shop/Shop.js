@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Product from "../Product/Product";
 import "./Shop.css";
+import Product from "../Product/Product";
 import Cart from "../Cart/Cart";
 import {
   addToLocalStorage,
@@ -8,25 +7,13 @@ import {
   deleteShoppingCart
 } from "../../utilities/localStorageManagement";
 import useProducts from "../../hooks/useProducts";
+import useCart from "../../hooks/useCart";
 
 const Shop = () => {
   const [products, setProducts] = useProducts();
-  const [cart, setCart] = useState([]);
 
-  // Load Cart from Local Storage
-  useEffect(() => {
-    const storedCart = getStoredCart();
-    const savedCart = [];
-    for (const id in storedCart) {
-      const addedProduct = products.find((product) => product.id === id);
-      if (addedProduct) {
-        const quantity = storedCart[id];
-        addedProduct.quantity = quantity;
-        savedCart.push(addedProduct);
-      }
-    }
-    setCart(savedCart);
-  }, [products]);
+    // Load Cart from Local Storage
+  const [cart, setCart] = useCart(products);
 
   const addToCart = (selectedProduct) => {
     let newCart = [];
