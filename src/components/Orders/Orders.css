@@ -1,5 +1,8 @@
 .review-items-container {
   margin: auto;
 }
-.review-cart {
+.review-cart .button-container .clear-btn, .review-cart .button-container .order-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

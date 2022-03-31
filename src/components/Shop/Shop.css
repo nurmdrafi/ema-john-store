@@ -10,7 +10,11 @@
   margin: 0 auto;
   padding-top: calc(200px - 80px);
 }
-
+.shop-container .button-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 @media only screen and (max-width: 1310px) {
   .products-container {
     grid-template-columns: repeat(2, 300px);

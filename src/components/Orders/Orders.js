@@ -5,6 +5,13 @@ import Cart from "../Cart/Cart";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import "./Orders.css";
 import { removeItemFromCart } from "../../utilities/localStorageManagement";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCreditCard,
+  faMoneyCheckDollar,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
   const [products, setProducts] = useProducts();
@@ -26,7 +33,19 @@ const Orders = () => {
         ))}
       </div>
       <div className="review-cart">
-        <Cart cart={cart}></Cart>
+        <Cart cart={cart}>
+          <div className="button-container">
+            <button className="clear-btn">
+              Clear Cart <FontAwesomeIcon icon={faTrashCan}></FontAwesomeIcon>
+            </button>
+            <Link to="/inventory" style={{ textDecoration: 'none' }}>
+              <button className="order-btn">
+                Proceed Checkout{" "}
+                <FontAwesomeIcon icon={faCreditCard}></FontAwesomeIcon>
+              </button>
+            </Link>
+          </div>
+        </Cart>
       </div>
     </div>
   );

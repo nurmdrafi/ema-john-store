@@ -8,6 +8,9 @@ import {
 } from "../../utilities/localStorageManagement";
 import useProducts from "../../hooks/useProducts";
 import useCart from "../../hooks/useCart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [products, setProducts] = useProducts();
@@ -28,7 +31,7 @@ const Shop = () => {
     setCart(newCart);
     addToLocalStorage(selectedProduct.id);
   };
-  console.log(cart);
+
   return (
     <div className="shop-container">
       <div className="products-container">
@@ -40,7 +43,19 @@ const Shop = () => {
           ></Product>
         ))}
       </div>
-      <Cart cart={cart}></Cart>
+      <Cart cart={cart}>
+        <div className="button-container">
+          <button className="clear-btn">
+            Clear Cart <FontAwesomeIcon icon={faTrashCan}></FontAwesomeIcon>
+          </button>
+          <Link to="/orders" style={{ textDecoration: 'none' }}>
+            <button className="order-btn">
+              Review Order{" "}
+              <FontAwesomeIcon icon={faArrowRight}></FontAwesomeIcon>
+            </button>
+          </Link>
+        </div>
+      </Cart>
     </div>
   );
 };
