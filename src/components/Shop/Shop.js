@@ -7,17 +7,11 @@ import {
   getStoredCart,
   deleteShoppingCart
 } from "../../utilities/localStorageManagement";
+import useProducts from "../../hooks/useProducts";
 
 const Shop = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useProducts();
   const [cart, setCart] = useState([]);
-
-  // Load Products
-  useEffect(() => {
-    fetch("./products.json")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
 
   // Load Cart from Local Storage
   useEffect(() => {
