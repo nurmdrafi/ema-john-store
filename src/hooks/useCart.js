@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getStoredCart } from "../utilities/localStorageManagement";
 
 const useCart = (products) => {
-  const [cart, setCart] = useState();
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const storedCart = getStoredCart();

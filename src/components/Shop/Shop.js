@@ -4,25 +4,23 @@ import Cart from "../Cart/Cart";
 import {
   addToLocalStorage,
   getStoredCart,
-  deleteShoppingCart
+  deleteShoppingCart,
 } from "../../utilities/localStorageManagement";
 import useProducts from "../../hooks/useProducts";
 import useCart from "../../hooks/useCart";
 
 const Shop = () => {
   const [products, setProducts] = useProducts();
-
-    // Load Cart from Local Storage
   const [cart, setCart] = useCart(products);
 
   const addToCart = (selectedProduct) => {
     let newCart = [];
-    const exist = cart.find(product => product.id === selectedProduct.id);
-    if(!exist){
+    const exist = cart.find((product) => product.id === selectedProduct.id);
+    if (!exist) {
       selectedProduct.quantity = 1;
       newCart = [...cart, selectedProduct];
-    } else{
-      const rest = cart.filter(product => product.id !== selectedProduct.id);
+    } else {
+      const rest = cart.filter((product) => product.id !== selectedProduct.id);
       exist.quantity = exist.quantity + 1;
       newCart = [...rest, exist];
     }
@@ -30,7 +28,7 @@ const Shop = () => {
     setCart(newCart);
     addToLocalStorage(selectedProduct.id);
   };
-
+  console.log(cart);
   return (
     <div className="shop-container">
       <div className="products-container">
