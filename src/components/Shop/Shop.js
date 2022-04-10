@@ -1,4 +1,5 @@
 import "./Shop.css";
+import React from 'react';
 import Product from "../Product/Product";
 import Cart from "../Cart/Cart";
 import {
