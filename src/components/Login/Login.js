@@ -1,18 +1,26 @@
 import "./Login.css";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import googleLogo from "../../images/google.svg";
 
 import auth from "../../../src/firebase.init";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+
+
 
 const Login = () => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [showError, setShowError] = useState("");
 
-  const navigate = useNavigate();
-  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(
+  // const [user] = useAuthState(auth);
+
+ /*  const navigate = useNavigate();
+  const location = useLocation(); */
+
+  // const from = location.state?.from?.pathname || "/";
+  
+  const [signInWithEmailAndPassword, user] = useSignInWithEmailAndPassword(
     auth
   );
 
@@ -55,12 +63,13 @@ const Login = () => {
         });
     }
 
-    if (user) {
-      return navigate("/shop");
-    }
     console.log('email/pass', email, password)
   };
 
+  /* if (user) {
+    return navigate(from, { replace: true });
+  }
+   */
   return (
     <div className="form-container">
       <div>

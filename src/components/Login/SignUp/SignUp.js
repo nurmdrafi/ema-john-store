@@ -47,13 +47,15 @@ const SignUp = () => {
 
   const handleUserSignUp = (e) =>{
     e.preventDefault();
-    createUserWithEmailAndPassword(email.value, password.value)
-    .then(() =>
-    console.log(user)
-    )
-    .catch(error =>{
-      console.error(error.message)
-    })
+    if(email.value !== "" && password.value !== "" && password.value === confirmPassword.value){
+      createUserWithEmailAndPassword(email.value, password.value)
+      .then(() =>
+      console.log(user)
+      )
+      .catch(error =>{
+        console.error(error.message)
+      })
+    }
 
     if(user){
       return navigate('/shop');
