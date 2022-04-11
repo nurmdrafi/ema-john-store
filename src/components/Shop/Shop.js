@@ -4,8 +4,6 @@ import Product from "../Product/Product";
 import Cart from "../Cart/Cart";
 import {
   addToLocalStorage,
-  getStoredCart,
-  deleteShoppingCart,
 } from "../../utilities/localStorageManagement";
 import useProducts from "../../hooks/useProducts";
 import useCart from "../../hooks/useCart";
@@ -14,7 +12,7 @@ import { faArrowRight, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const Shop = () => {
-  const [products, setProducts] = useProducts();
+  const [products] = useProducts();
   const [cart, setCart] = useCart(products);
 
   const addToCart = (selectedProduct) => {

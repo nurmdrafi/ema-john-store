@@ -8,13 +8,12 @@ import { removeItemFromCart } from "../../utilities/localStorageManagement";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCreditCard,
-  faMoneyCheckDollar,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const Orders = () => {
-  const [products, setProducts] = useProducts();
+  const [products] = useProducts();
   const [cart, setCart] = useCart(products);
   const handleRemoveProduct = (product) => {
     const rest = cart.filter((item) => item.id !== product.id);
