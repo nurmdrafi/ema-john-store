@@ -1,7 +1,8 @@
 import "./SignUp.css";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import googleLogo from "../../../images/google.svg";
+
 import auth from "../../../firebase.init";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
@@ -14,10 +15,12 @@ const SignUp = () => {
     error: "",
   });
 
-  const [ createUserWithEmailAndPassword ] = useCreateUserWithEmailAndPassword(auth);
+  const navigate = useNavigate();
+
+  const [ createUserWithEmailAndPassword, user] = useCreateUserWithEmailAndPassword(auth);
   
   const handleEmail = (e) => {
-    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
+    if(!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
       setEmail({ value: "", error: "Please provide valid email." });  
     } else{
       setEmail({ value: e.target.value, error: "" });
@@ -42,21 +45,25 @@ const SignUp = () => {
     
   };
 
-  const handleSubmit = (e) =>{
+  const handleUserSignUp = (e) =>{
     e.preventDefault();
     createUserWithEmailAndPassword(email.value, password.value)
     .then(() =>
-    console.log("submitted"))
+    console.log(user)
+    )
     .catch(error =>{
       console.error(error.message)
     })
-    console.log(email, password, confirmPassword)
+
+    if(user){
+      return navigate('/shop');
+    }
   }
   return (
     <div className="form-container">
       <div>
         <h2 className="form-title">Sign Up</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleUserSignUp}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input
