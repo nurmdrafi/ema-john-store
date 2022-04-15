@@ -1,6 +1,6 @@
 import "./Login.css";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import googleLogo from "../../images/google.svg";
 import auth from "../../../src/firebase.init";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
@@ -13,6 +13,8 @@ const Login = () => {
   const [showError, setShowError] = useState("");
 
   const navigate = useNavigate();
+  // let location = useLocation();
+  // let from = location.state?.from?.pathname || "/";
 
   const [signInWithEmailAndPassword, user,
     loading,
@@ -29,16 +31,8 @@ const Login = () => {
   };
 
   const handlePassword = (e) => {
-    if (
-      !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
-        e.target.value
-      )
-    ) {
-      setPassword({
-        value: "",
-        error:
-          "Your password should contain at least one uppercase, one lowercase, one numeric, one special character and minimum 8 characters.",
-      });
+    if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(e.target.value)) {
+      setPassword({value: "", error: "Your password should contain at least one uppercase, one lowercase, one numeric, one special character and minimum 8 characters." });
     } else {
       setPassword({ value: e.target.value, error: "" });
     }
@@ -47,7 +41,7 @@ const Login = () => {
   const handleUserLogIn = (e) => {
     e.preventDefault();
     if(email.value !== "" && password.value !== ""){
-      signInWithEmailAndPassword(email.value, password.value)
+      signInWithEmailAndPassword(email.value, password.value);
     }
   };
 
@@ -55,6 +49,7 @@ const Login = () => {
 
     if (user) {
       navigate('/shop');
+      // navigate(from, { replace: true });
     }
 
     if(error){

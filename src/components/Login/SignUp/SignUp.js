@@ -5,9 +5,11 @@ import googleLogo from "../../../images/google.svg";
 
 import auth from "../../../firebase.init";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useUpdateProfile } from 'react-firebase-hooks/auth';
 
 
 const SignUp = () => {
+  const [name, setName] = useState({ value: "", error: "" });
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [confirmPassword, setConfirmPassword] = useState({
@@ -19,7 +21,13 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const [ createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+  // const [ createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth, {sendEmailVerification: true});
+  const [updateProfile, updating, updateError] = useUpdateProfile(auth);
   
+  const handleName = (e) =>{
+    setName({value: e.target.value, error: ""})
+  }
+
   const handleEmail = (e) => {
     if(!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
       setEmail({ value: "", error: "Please provide valid email." });  
@@ -46,10 +54,11 @@ const SignUp = () => {
     
   };
 
-  const handleUserSignUp = (e) =>{
+  const handleUserSignUp = async (e) =>{
     e.preventDefault();
-    if(email.value !== "" && password.value !== "" && password.value === confirmPassword.value){
-      createUserWithEmailAndPassword(email.value, password.value)
+    if(name.value !== "" && email.value !== "" && password.value !== "" && password.value === confirmPassword.value){
+      await createUserWithEmailAndPassword(email.value, password.value);
+      await updateProfile({ displayName: name.value});
     }
   }
   useEffect(() =>{
@@ -72,6 +81,18 @@ const SignUp = () => {
       <div>
         <h2 className="form-title">Sign Up</h2>
         <form onSubmit={handleUserSignUp}>
+        <div className="input-group">
+            <label htmlFor="name">Name</label>
+            <input
+              onBlur={handleName}
+              type="text"
+              name="name"
+              id="name"
+              required
+            />
+            <p style={{color: 'red', width: '415px'}}>{name.error}</p>
+          </div>
+
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input
