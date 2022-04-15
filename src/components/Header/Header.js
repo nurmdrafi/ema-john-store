@@ -7,10 +7,6 @@ import logo from '../../images/Logo.svg'
 import './Header.css'
 const Header = () => {
     const [user] = useAuthState(auth);
-    if(user){
-        console.log(user)
-    }
-
     return (
         <nav className='header-nav'>
             <img src={logo} alt="" />

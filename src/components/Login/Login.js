@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import googleLogo from "../../images/google.svg";
 import auth from "../../../src/firebase.init";
-import { useAuthState, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 
 
@@ -14,15 +14,11 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  
-  const [user] = useAuthState(auth);
-  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, user,
+    loading,
+    error,] = useSignInWithEmailAndPassword(auth);
 
-  useEffect(() => {
-    if (user) {
-      return navigate('/inventory');
-    }
-  }, [])
+  
   
   const handleEmail = (e) => {
     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)) {
@@ -51,16 +47,27 @@ const Login = () => {
   const handleUserLogIn = (e) => {
     e.preventDefault();
     if(email.value !== "" && password.value !== ""){
-
       signInWithEmailAndPassword(email.value, password.value)
-        .then(() => console.log(user))
-        .catch((error) => {
-          console.log("error", error);
-        });
     }
-    console.log(email.value, password.value)
   };
 
+  useEffect(() => {
+
+    if (user) {
+      navigate('/shop');
+    }
+
+    if(error){
+      console.log(error)
+      const message = error.message;
+      if(message.includes("user-not-found")){
+        setShowError("User Not Found")
+      } else if(message.includes("wrong-password")){
+        setShowError("Wrong Password")
+      }
+    }
+  
+  }, [user, error])
 
   return (
     <div className="form-container">
@@ -88,6 +95,7 @@ const Login = () => {
               required
             />
              <p style={{color: 'red', width: '415px'}}>{password.error}</p>
+             <p style={{color: 'red', width: '415px'}}>{showError}</p>
           </div>
           <input className="form-submit" type="submit" value="Login" />
           <p style={{ textAlign: "center" }}>

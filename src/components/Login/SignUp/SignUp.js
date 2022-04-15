@@ -1,5 +1,5 @@
 import "./SignUp.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import googleLogo from "../../../images/google.svg";
 
@@ -14,10 +14,11 @@ const SignUp = () => {
     value: "",
     error: "",
   });
+  const [showError, setShowError] = useState("");
 
   const navigate = useNavigate();
 
-  const [ createUserWithEmailAndPassword, user] = useCreateUserWithEmailAndPassword(auth);
+  const [ createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
   
   const handleEmail = (e) => {
     if(!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
@@ -49,18 +50,23 @@ const SignUp = () => {
     e.preventDefault();
     if(email.value !== "" && password.value !== "" && password.value === confirmPassword.value){
       createUserWithEmailAndPassword(email.value, password.value)
-      .then(() =>
-      console.log(user)
-      )
-      .catch(error =>{
-        console.error(error.message)
-      })
-    }
-
-    if(user){
-      return navigate('/shop');
     }
   }
+  useEffect(() =>{
+    if(user){
+      navigate('/login')
+    }
+
+    if(error){
+
+      const message = error.message;
+      console.log(message);
+      if(message.includes("/email-already-in-use")){
+        setShowError("This email already in use")
+      } 
+    }
+  }, [user, error])
+
   return (
     <div className="form-container">
       <div>
@@ -98,6 +104,7 @@ const SignUp = () => {
               required
             />
             <p style={{color: 'red', width: '415px'}}>{confirmPassword.error}</p>
+            <p style={{color: 'red', width: '415px'}}>{showError}</p>
           </div>
           <input className="form-submit" type="submit" value="Sign Up" />
           <p style={{ textAlign: "center" }}>
