@@ -26,3 +26,8 @@
 .header-links a:hover{
     color: #ff9900;
 }
+.logout-btn{
+    margin-left: 36px;
+    padding: 7px;
+    font-size: 16px;
+}

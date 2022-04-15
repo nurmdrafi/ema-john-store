@@ -1,8 +1,7 @@
 import "./Login.css";
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import googleLogo from "../../images/google.svg";
-
 import auth from "../../../src/firebase.init";
 import { useAuthState, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
@@ -13,17 +12,18 @@ const Login = () => {
   const [password, setPassword] = useState({ value: "", error: "" });
   const [showError, setShowError] = useState("");
 
-  // const [user] = useAuthState(auth);
+  const navigate = useNavigate();
 
- /*  const navigate = useNavigate();
-  const location = useLocation(); */
-
-  // const from = location.state?.from?.pathname || "/";
   
-  const [signInWithEmailAndPassword, user] = useSignInWithEmailAndPassword(
-    auth
-  );
+  const [user] = useAuthState(auth);
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
+  useEffect(() => {
+    if (user) {
+      return navigate('/inventory');
+    }
+  }, [])
+  
   const handleEmail = (e) => {
     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)) {
       setEmail({ value: "", error: "Please provide valid email." });
@@ -39,7 +39,7 @@ const Login = () => {
       )
     ) {
       setPassword({
-        value: e.target.value,
+        value: "",
         error:
           "Your password should contain at least one uppercase, one lowercase, one numeric, one special character and minimum 8 characters.",
       });
@@ -47,11 +47,7 @@ const Login = () => {
       setPassword({ value: e.target.value, error: "" });
     }
   };
-  /* if(error){
-    if(error.includes("wrong-password")){
-      setShowError("Wrong Password")
-    }
-  } */
+
   const handleUserLogIn = (e) => {
     e.preventDefault();
     if(email.value !== "" && password.value !== ""){
@@ -59,17 +55,13 @@ const Login = () => {
       signInWithEmailAndPassword(email.value, password.value)
         .then(() => console.log(user))
         .catch((error) => {
-          console.error("error", error.message);
+          console.log("error", error);
         });
     }
-
-    console.log('email/pass', email, password)
+    console.log(email.value, password.value)
   };
 
-  /* if (user) {
-    return navigate(from, { replace: true });
-  }
-   */
+
   return (
     <div className="form-container">
       <div>
