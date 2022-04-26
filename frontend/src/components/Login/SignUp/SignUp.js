@@ -61,6 +61,7 @@ const SignUp = () => {
       await updateProfile({ displayName: name.value});
     }
   }
+
   useEffect(() =>{
     if(user){
       navigate('/login')
