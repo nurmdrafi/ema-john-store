@@ -1,22 +1,36 @@
 import { useEffect, useState } from "react";
 import { getStoredCart } from "../utilities/localStorageManagement";
 
-const useCart = (products) => {
-  const [cart, setCart] = useState([]);
+const useCart = () => {
+  const [cart, setCart] = useState([]); // ❌ remove product dependency
+  console.log("cart",cart)
 
   useEffect(() => {
     const storedCart = getStoredCart();
     const savedCart = [];
-    for (const id in storedCart) {
-      const addedProduct = products.find((product) => product._id === id);
-      if (addedProduct) {
-        const quantity = storedCart[id];
-        addedProduct.quantity = quantity;
-        savedCart.push(addedProduct);
-      }
-    }
-    setCart(savedCart);
-  }, [products]);
+    const keys = Object.keys(storedCart); // get ids from locally stored cart
+
+    fetch("http://localhost:5000/productByKeys", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(keys),
+    })
+      .then((res) => res.json())
+      .then((products) => {
+        console.log("products", products)
+        for (const id in storedCart) {
+          const addedProduct = products.find((product) => product._id === id);
+          if (addedProduct) {
+            const quantity = storedCart[id];
+            addedProduct.quantity = quantity;
+            savedCart.push(addedProduct);
+          }
+        }
+        setCart(savedCart);
+      });
+  }, []); // ❌ remove product dependency
   return [cart, setCart];
 };
 

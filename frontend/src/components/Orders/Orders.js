@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 
 const Orders = () => {
   const [products] = useProducts();
-  const [cart, setCart] = useCart(products);
+  // const [cart, setCart] = useCart(products);
+  const [cart, setCart] = useCart();
   const handleRemoveProduct = (product) => {
     const rest = cart.filter((item) => item._id !== product._id);
     setCart(rest);

@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useCart(products);
+  // const [cart, setCart] = useCart(products);
+  const [cart, setCart] = useCart();
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
@@ -29,7 +30,7 @@ const Shop = () => {
       .then((res) => res.text())
       .then((data) => {
         const productCount = data;
-        const pages = Math.ceil(productCount / parseInt(size));
+        const pages = Math.ceil(productCount / size);
         setPageCount(pages);
       });
   }, [size]);

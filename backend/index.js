@@ -2,7 +2,7 @@ const express = require("express");
 const app = express(); // create app by calling express()
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const ObjectID = require("mongodb").ObjectID;
+const ObjectId = require("mongodb").ObjectId;
 const port = process.env.POST || 5000;
 
 // use middleware
@@ -25,28 +25,31 @@ async function run() {
 
     // Load Product based on page number and size
     app.get("/products", async (req, res) => {
-      console.log(req.query)
+      console.log(req.query);
       const page = parseInt(req.query.page);
       const size = parseInt(req.query.size);
       const query = {};
       const cursor = productCollection.find(query);
       let products;
-      if(page || size){
+      if (page || size) {
         /* 
         page: 0---> skip: 0 get: 0-10(10)
         page: 1---> skip: 1*10 get: 11-20(10)
         page: 2---> skip: 2*10 get: 21-30(10)
         page: 3---> skip: 3*10 get: 31-40(10)
         */
-        products = await cursor.skip(page*size).limit(size).toArray();
-      } else{
+        products = await cursor
+          .skip(page * size)
+          .limit(size)
+          .toArray();
+      } else {
         products = await cursor.toArray();
       }
-      
+
       res.send(products);
     });
 
-    //
+    // get product count
     app.get("/productsCount", async (req, res) => {
       // const query = {};
       // const cursor = productCollection.find(query);
@@ -54,6 +57,17 @@ async function run() {
       const count = await productCollection.estimatedDocumentCount();
       // res.send({ count }); send as object or json formate
       res.json(count);
+    });
+
+    // use post to get products by ids
+    app.post("/productByKeys", async (req, res) => {
+      const keys = req.body;
+      console.log(keys)
+      const ids = keys.map((id) => ObjectId(id));
+      const query = { _id: { $in: ids } };
+      const cursor = productCollection.find(query);
+      const products = await cursor.toArray();
+      res.send(products);
     });
   } finally {
     // await client.close();
