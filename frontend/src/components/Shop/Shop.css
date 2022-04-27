@@ -10,17 +10,37 @@
   margin: 0 auto;
   padding-top: calc(200px - 80px);
 }
-.shop-container .button-container{
+.shop-container .button-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination button {
+  margin: 50px 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+.pagination .selected {
+  background-color: black;
+  color: white;
+}
+.pagination select{
+  width: 40px;
+  height: 50px;
+  border: none;
+  outline: none;
 }
 @media only screen and (max-width: 1310px) {
   .products-container {
     grid-template-columns: repeat(2, 300px);
   }
 }
-@media only screen and (max-width: 980px){
+@media only screen and (max-width: 980px) {
   .products-container {
     grid-template-columns: 300px;
   }
